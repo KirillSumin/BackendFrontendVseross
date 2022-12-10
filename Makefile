@@ -6,7 +6,10 @@ updm:
 	sleep 1
 	./venv/bin/python3 manage.py migrate
 
-migrate:
+makemig:
+	./venv/bin/python3 manage.py makemigrations
+
+mig:
 	./venv/bin/python3 manage.py migrate
 
 superuser:

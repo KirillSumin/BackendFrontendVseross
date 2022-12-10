@@ -72,7 +72,7 @@ ROOT_URLCONF = 'application.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [BASE_DIR / 'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -145,12 +145,6 @@ USE_I18N = True
 
 USE_TZ = True
 
-
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/4.1/howto/static-files/
-
-STATIC_URL = 'static/'
-
 # Mailing
 
 # EMAIL_HOST = config.get('email', 'host')
@@ -170,7 +164,10 @@ STATIC_URL = 'static/'
 # MAX_CAPTCHA_LEN = config.getint('captcha', 'max_len')
 # CAPTCHA_TTL = config.getint('captcha', 'ttl')
 
-# Default primary key field type
-# https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
+STATIC_URL = 'static/'
+
+STATICFILES_DIRS = (
+    os.path.join(BASE_DIR, "static"),
+)
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
