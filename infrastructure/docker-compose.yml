@@ -1,0 +1,25 @@
+version: "3.9"
+
+services:
+  db:
+    image: postgres
+    volumes:
+      - ./data/db:/var/lib/postgresql/data
+    env_file: ../application/bfv_settings.env
+    ports:
+      - "5450:5432"
+    restart: always
+  cache:
+    image: redis
+    env_file: ../application/bfv_settings.env
+    ports:
+      - "6350:6379"
+    restart: always
+
+#  django:
+#    build: django/
+#    command: gunicorn -w 3 -b 0.0.0.0:8001 application.wsgi
+#    depends_on:
+#      - db
+#      - nginx
+#    restart: always
