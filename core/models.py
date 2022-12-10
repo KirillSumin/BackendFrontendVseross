@@ -50,6 +50,9 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     created_d = models.DateTimeField('дата создания', default=timezone.now)
 
+    def is_verified(self):
+        return True
+
     objects = UserManager()
 
     EMAIL_FIELD = "email"

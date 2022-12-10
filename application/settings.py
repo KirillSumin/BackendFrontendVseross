@@ -38,6 +38,16 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
+    # 'otp_yubikey',
+    'django_otp',
+    # 'django_otp.plugins.otp_static',
+    'django_otp.plugins.otp_totp',
+    # 'django_otp.plugins.otp_email',  # <- if you want email capability.
+    # 'two_factor',
+    # 'two_factor.plugins.phonenumber',  # <- if you want phone number capability.
+    # 'two_factor.plugins.email',  # <- if you want email capability.
+    # 'two_factor.plugins.yubikey',  # <- for yubikey capability.
+
     'core',
 ]
 
@@ -54,6 +64,9 @@ MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
+
+    'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'django_otp.middleware.OTPMiddleware',
 ]
 
 if not DEBUG:
@@ -150,6 +163,16 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 
 STATIC_URL = 'static/'
+
+# LOGIN_URL = 'two_factor:login'
+# LOGIN_URL = 'dadmin'
+#
+# TWO_FACTOR_PATCH_ADMIN = True
+#
+# TWO_FACTOR_TOTP_DIGITS = 6
+#
+# TWO_FACTOR_LOGIN_TIMEOUT = 600
+
 
 # Mailing
 
