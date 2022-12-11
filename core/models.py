@@ -5,7 +5,7 @@ from django.contrib.auth.base_user import AbstractBaseUser, BaseUserManager
 from django.utils import timezone
 from django.core.validators import validate_email
 
-from core.validators import validate_phone
+from validators import validate_phone
 
 
 class UserManager(BaseUserManager):
@@ -70,3 +70,41 @@ class User(AbstractBaseUser, PermissionsMixin):
     class Meta:
         verbose_name = 'пользователь'
         verbose_name_plural = 'пользователи'
+
+
+class Employee(models.Model):
+    class Meta:
+        verbose_name = 'Сотрудник'
+        verbose_name_plural = 'Сотрудники'
+
+    user_id = models.ForeignKey(User, verbose_name='id связанного юзера', related_name='employees')
+    photo = models.ImageField(upload_to='employees_photos/', blank=True, null=True)
+    car_number = models.CharField('номер авто', max_length=10, null=True, blank=True)
+
+    def __str__(self):
+        return f'{self.user_id}'
+
+
+class History(models.Model):
+    class Meta:
+        verbose_name = 'История входа и выхода'
+        verbose_name_plural = 'Истории входа и выхода'
+
+    user_id = models.ForeignKey(User, verbose_name='id вошедшего юзера', related_name='strory')
+
+    entry_date = models.DateTimeField('дата входа', default=timezone.now)
+    exit_date = models.DateTimeField('дата выхода', default=timezone.now)
+
+    video_entry = models.FileField(upload_to='enter_storage/', blank=True, null=True)
+    video_exit = models.FileField(upload_to='exit_storage/', blank=True, null=True)
+
+    def get_video_entry_url(self):
+        path = self.video_entry.url
+        return path if path else None
+
+    def get_video_exit_url(self):
+        path = self.video_exit.url
+        return path if path else None
+
+    def __str__(self):
+        return f'{self.exit_date} #{self.user_id}'
