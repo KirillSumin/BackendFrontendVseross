@@ -1,0 +1,50 @@
+{% extends "base_bootstrap.html" %}
+
+
+{% block title %}Login{% endblock %}
+{% block add_stylesheets %}
+    {% load static %}
+    <link href={% static 'login.css' %} rel="stylesheet">
+{% endblock %}
+
+
+{% block content %}
+    <div class="form-signin">
+        <form action="{% url "core:login" %}" method="POST">
+            {% csrf_token %}
+            <h1 class="h3 fw-bold mb-3 fw-normal text-center">Добро пожаловать</h1>
+
+            <div class="form-floating">
+                <input type="email" name="email" class="form-control email" placeholder="_" value="{{ email_init }}" required>
+                <label>Адрес эл. почты</label>
+            </div>
+            {% if form.errors.email %}
+                <div class="alert alert-danger" role="alert">
+                    {{ form.errors.email | striptags }}
+                </div>
+            {% endif %}
+
+            <div class="form-floating">
+                <input type="password" name="password" class="form-control password" placeholder="_" required>
+                <label>Пароль</label>
+            </div>
+            {% if form.errors.password %}
+                <div class="alert alert-danger" role="alert">
+                    {{ form.errors.password | striptags }}
+                </div>
+            {% endif %}
+
+            <div class="d-grid gap-1">
+                <button class="w-100 btn btn-lg btn-primary" type="submit">Войти</button>
+            </div>
+        </form>
+        <hr/>
+        <div class="d-grid gap-1">
+            {#            TODO#}
+            <form action="/core/registration/">
+                <button class="w-100 btn btn-lg btn-secondary">Забыли пароль ?</button>
+            </form>
+        </div>
+        <p class="mt-5 mb-3 text-muted">&copy; 2022 BFV, Inc</p>
+    </div>
+{% endblock %}

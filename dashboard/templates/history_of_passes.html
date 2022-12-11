@@ -1,0 +1,40 @@
+{% extends 'adminlte/base.html' %}
+
+<!-- Set title of app -->
+{% block title %}История проходов{% endblock %}
+
+<!-- Specify content of main body of page -->
+{% block content %}
+    <div style="width: 100%;text-align: center;">
+            <div style="display:inline-block;"><img src="{{ 'http://127.0.0.1:8001/dashboard/livefe/'}}"></div>
+            <div style="display:inline-block;" id="user_photo"></div>
+    </div>
+    <div id="table_with_entrances"></div>
+{% endblock %}
+
+{% block nav_sidebar %}
+    {% include 'history_of_passes_sidebar.html' %}
+{% endblock %}
+
+{% block nav_header %}
+    {% include 'main_header.html' %}
+{% endblock %}
+
+{% block extra_js %}
+    <script>
+        let d = document.getElementsByTagName("body")[0];
+        d.className += " sidebar-collapse";
+
+        async function update_site_content() {
+            let user_photo = document.getElementById("user_photo");
+            let user_photo_new = await fetch('http://127.0.0.1:8001/dashboard/get_user_photo/');
+            user_photo.innerHTML = await user_photo_new.text()
+            let table = await fetch('http://127.0.0.1:8001/dashboard/table_with_entrances/');
+            table_with_entrances.innerHTML = await table.text()
+        }
+        update_site_content()
+        setInterval(update_site_content, 500);
+    </script>
+
+{#    <meta http-equiv="refresh" content="3">#}
+{% endblock %}

@@ -1,0 +1,22 @@
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th scope="col">Email</th>
+      <th scope="col">ФИО</th>
+      <th scope="col">Дата входа</th>
+      <th scope="col">Дата выхода</th>
+      <th scope="col">Тип авторизации</th>
+    </tr>
+  </thead>
+  <tbody>
+     {% for obj in object_list %}
+        <tr>
+              <th>{{ obj.entrance.user.email }}</th>
+              <td>{{ obj.entrance.user.first_name }} {{ obj.entrance.user.last_name }} {{ obj.entrance.user.patronymic }}</td>
+                <td>{{ obj.entrance.entry_date }}</td>
+              <td>{{ obj.exit_date }}</td>
+            <td>{{ obj.auth_type }}</td>
+        </tr>
+     {% endfor %}
+  </tbody>
+</table>

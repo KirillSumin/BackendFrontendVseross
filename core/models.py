@@ -46,9 +46,16 @@ class User(AbstractBaseUser, PermissionsMixin):
     last_name = models.CharField('фамилия', max_length=150)
     patronymic = models.CharField('отчество', max_length=150, blank=True)
 
+    car_number = models.CharField('номер авто', max_length=10, null=True, blank=True)
+
+    user_photo = models.ImageField('фото пользователя', upload_to='users_photos')
+
     is_staff = models.BooleanField('персонал?', default=False)
 
     created_d = models.DateTimeField('дата создания', default=timezone.now)
+
+    def is_verified(self):
+        return True
 
     objects = UserManager()
 
@@ -67,3 +74,31 @@ class User(AbstractBaseUser, PermissionsMixin):
     class Meta:
         verbose_name = 'пользователь'
         verbose_name_plural = 'пользователи'
+
+
+class EntranceHistory(models.Model):
+    AUTH_TYPE = [
+        ('auto', 'AutoNumber'),
+        ('face', 'FaceRecognition'),
+    ]
+
+    user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='id связанного юзера', related_name='entrance_story')
+
+    auth_type = models.CharField(
+        max_length=4,
+        choices=AUTH_TYPE,
+    )
+
+    entry_date = models.DateTimeField('дата входа', auto_now_add=True)
+    exit_date = models.DateTimeField('дата выхода', blank=True, null=True)
+
+    def __str__(self):
+        if not self.exit_date:
+            exit_date_str = 'Ещё не вышел'
+        else:
+            exit_date_str = self.exit_date.strftime("%d-%m-%Y")
+        return f'#{self.user_id} {self.entry_date.strftime("%d-%m-%Y")} {exit_date_str}'
+
+    class Meta:
+        verbose_name = 'История входа и выхода'
+        verbose_name_plural = 'Истории входа и выхода'
