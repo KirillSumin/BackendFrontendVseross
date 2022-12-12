@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+{% block content %}
+          <video width="320" height="240" controls>
+            {% load static %}
+
+              <source src="{{ video.file.url }}" type='video/mp4;codecs="avc1.42E01E, mp4a.40.2"'>
+              Your browser does not support the video tag
+               {{ video.Dis }}
+          </video>
+    <video src="sample.mp4" width="480" height="270"  controls />
+{% endblock %}
+</head>
+<body>
+
+</body>
+</html>

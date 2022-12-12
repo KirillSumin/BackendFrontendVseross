@@ -5,7 +5,15 @@ from django.contrib.auth.base_user import AbstractBaseUser, BaseUserManager
 from django.utils import timezone
 from django.core.validators import validate_email
 
-from validators import validate_phone
+# from validators import validate_phone
+
+from django.core.validators import RegexValidator
+
+
+validate_phone = RegexValidator(
+    regex=r'^\+?1?\d{9,15}$',
+    message='Номер телефона должен быть в формате \'+79999999999\''
+)
 
 
 class UserManager(BaseUserManager):
@@ -77,7 +85,7 @@ class Employee(models.Model):
         verbose_name = 'Сотрудник'
         verbose_name_plural = 'Сотрудники'
 
-    user_id = models.ForeignKey(User, verbose_name='id связанного юзера', related_name='employees')
+    user_id = models.ForeignKey(User, verbose_name='id связанного юзера', related_name='employees', on_delete=models.CASCADE)
     photo = models.ImageField(upload_to='employees_photos/', blank=True, null=True)
     car_number = models.CharField('номер авто', max_length=10, null=True, blank=True)
 
@@ -90,21 +98,35 @@ class History(models.Model):
         verbose_name = 'История входа и выхода'
         verbose_name_plural = 'Истории входа и выхода'
 
-    user_id = models.ForeignKey(User, verbose_name='id вошедшего юзера', related_name='strory')
+    user_id = models.ForeignKey(User, verbose_name='id вошедшего юзера', related_name='strory', on_delete=models.CASCADE)
 
     entry_date = models.DateTimeField('дата входа', default=timezone.now)
     exit_date = models.DateTimeField('дата выхода', default=timezone.now)
 
-    video_entry = models.FileField(upload_to='enter_storage/', blank=True, null=True)
-    video_exit = models.FileField(upload_to='exit_storage/', blank=True, null=True)
+    # video_entry = models.FileField(upload_to='enter_storage/', blank=True, null=True)
+    # video_exit = models.FileField(upload_to='exit_storage/', blank=True, null=True)
 
-    def get_video_entry_url(self):
-        path = self.video_entry.url
-        return path if path else None
+    # def get_video_entry_url(self):
+    #     path = self.video_entry.url
+    #     return path if path else None
 
-    def get_video_exit_url(self):
-        path = self.video_exit.url
-        return path if path else None
+    # def get_video_exit_url(self):
+    #     path = self.video_exit.url
+    #     return path if path else None
+
+    def get_video(self):
+        video = self.result.resVideo
+        return video if video else None
 
     def __str__(self):
-        return f'{self.exit_date} #{self.user_id}'
+        return f'{self.entry_date}, {self.exit.date}, #{self.user_id}'
+
+
+class Result(models.Model):
+    story = models.ForeignKey(History, related_name='result', on_delete=models.CASCADE)
+    datetime_start = models.DateTimeField()
+    datetime_end = models.DateTimeField()
+    resVideo = models.FileField()
+
+    def __str__(self):
+        return self.resVideo.url if self.resVideo.url else None
