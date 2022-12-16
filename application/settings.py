@@ -19,7 +19,7 @@ from django.utils.deprecation import MiddlewareMixin
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-env_path = os.path.join(BASE_DIR, 'application', 'bfv_settings.env')
+env_path = os.path.join(BASE_DIR, 'application', '.env')
 env = environ.Env()
 environ.Env.read_env(env_path)
 

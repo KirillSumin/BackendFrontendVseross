@@ -5,13 +5,13 @@ services:
     image: postgres
     volumes:
       - ./data/db:/var/lib/postgresql/data
-    env_file: ../application/bfv_settings.env
+    env_file: ../application/.env
     ports:
       - "5450:5432"
     restart: always
   cache:
     image: redis
-    env_file: ../application/bfv_settings.env
+    env_file: ../application/.env
     ports:
       - "6350:6379"
     restart: always
